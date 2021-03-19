@@ -1,0 +1,17 @@
+Package: ssdmreg
+Title: Subject Specific Dirichlet Multinomial Regression from Microbiota analysis
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Matteo",
+           family = "Pedone",
+           role = c("aut", "cre"),
+           email = "matteo.pedone@unifi.it",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
+Description: Building upon the Dirichlet-multinomial regression framework, we develop an high-dimensional Bayesian hierarchical model for microbiota analysis that exploits subject-specific regression coefficients to simultaneously borrow strength across districts and include complex interactions between diet and clinical factors if supported by the data.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.1
+LinkingTo: Rcpp, RcppArmadillo
+Imports: Rcpp, spikeSlabGAM, dplyr, plotrix
