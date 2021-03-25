@@ -256,8 +256,6 @@ gendata <- function(J = 10, n = 100, P = 10, Q = 5, beta_min = 0.75, beta_max = 
   n_reads_min <- 1000
   n_reads_max <- n_reads_min * 2
   theta0 <- theta0
-  phi <- matrix(0, n, J)
-  ct0 <- sample(n_reads_min:n_reads_max, n, replace = T)
   
   if (randint == TRUE) {
     ZETA <- ZETA[rep(1:nrow(ZETA), times = rep(repmeas, n)), ]
@@ -274,8 +272,11 @@ gendata <- function(J = 10, n = 100, P = 10, Q = 5, beta_min = 0.75, beta_max = 
   
   
   Y <- matrix(0, nrow(ZETA), J)
+  phi <- matrix(0, nrow(Y), J)
+  ct0 <- sample(n_reads_min:n_reads_max, nrow(Y), replace = T)
+  
   # sampling counts
-  for (i in 1:n) {
+  for (i in 1:nrow(Y)) {
     thisrow <- as.vector(exp(ZETA[i, ]))
     phi[i, ] <- thisrow / sum(thisrow)
     Y[i, ] <- dirmult::simPop(J = 1, n = ct0[i], pi = phi[i, ], theta = theta0)$data[1, ]

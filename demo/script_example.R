@@ -3,19 +3,19 @@ rm(list = ls())
 devtools::load_all()
 
 J <- 20
-n <- 100
+n <- 50
 P <- 5
 Q <- 5
 
-Niter <- 30
+Niter <- 300000
 burn <- Niter / 2
-thin <- 1
+thin <- 10
 
 Eff <- (Niter - burn) / thin
 
-data <- gendata(J, n, P, Q, .75, 1.5, 2, 2, 2, c(1, 1, 1, 1),
+data <- gendata(J, n, P, Q, .25, .75, 2, 2, 2, c(1, 1, 1, 1),
   corrx = 0.4, corrz = 0.4, nli = T, WH = F,
-  randint = F
+  randint = T
 )
 
 system.time(out <- ssdm(
