@@ -41,7 +41,7 @@ thetaXpostM[which(ppithetaX < .5)] <- 0.0 # this is the median model
 betaincluded1 <- rep(0, length((as.vector(thetaXpostM))))
 betaincluded1[which(as.vector(ppithetaX) > .5)] <- 1
 
-plot(betaincluded1,
+plot(c(ppithetaX),
   type = "h", ylim = c(0, 1), xlab = expression(paste("index for ", theta[x])),
   ylab = expression(paste("PPI ", theta[x]))
 )
@@ -51,7 +51,7 @@ thetaZpostM[which(ppithetaZ < .5)] <- 0.0 # this is the median model
 betaincluded2 <- rep(0, length((as.vector(thetaZpostM))))
 betaincluded2[which(as.vector(ppithetaZ) > .5)] <- 1
 
-plot(betaincluded2,
+plot(c(ppithetaZ),
   type = "h", ylim = c(0, 1), xlab = expression(paste("index for ", theta[z])),
   ylab = expression(paste("PPI ", theta[z]))
 )
