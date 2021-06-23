@@ -106,8 +106,8 @@ arma::rowvec uplam(arma::rowvec lambda, arma::vec beta, int pp, double tau=1,
   }
   
   for(qq = 0; qq < QQ; qq ++){
-    etas(qq) = 1.0/pow(work_lambda(qq), 2.0);
-    upsi(qq) = ::Rf_runif(0, 1.0/(1+etas(qq)));
+    etas(qq) = pow(pow(work_lambda(qq), 2.0), -1.0);
+    upsi(qq) = ::Rf_runif(0, pow((1+etas(qq)), -1.0));
     ub(qq) = (1-upsi(qq))/upsi(qq);
     temp(qq) = pow(beta(qq), 2.0)/(2.0*sigma*pow(tau, 2.0));/*tempps*/
     Fub(qq) = 1 - exp(-temp(qq)*ub(qq));/*Fub*/
@@ -116,7 +116,7 @@ arma::rowvec uplam(arma::rowvec lambda, arma::vec beta, int pp, double tau=1,
     }
     up(qq) = ::Rf_runif(0.0, Fub(qq));/*up*/
     etas2(qq) = -log(1-up(qq))/temp(qq);
-    work_lambda(qq) = 1.0/pow(etas2(qq), .5);
+    work_lambda(qq) = pow(pow(etas2(qq), .5), -1.0);
     
     if(work_lambda(qq) < .0001){
       work_lambda(qq) = .0001;
@@ -144,21 +144,21 @@ double uptau(arma::vec lambda, arma::vec beta, int qq, int PP, double tau,
   }
   if(truncated == true){
     tempt=arma::sum(pow(beta/lambda1,2))/(2*sigma);
-    double et = 1.0/pow(tau, 2.0);
-    double utau= ::Rf_runif(0.0, 1/(1+et));
+    double et = pow(pow(tau, 2.0), -1.0);
+    double utau= ::Rf_runif(0.0, pow((1+et), -1.0));
     double ubt = std::min((1-utau)/utau, pow(PP, 2.0));
-    double Fubt1 = ::Rf_pgamma(1.0,(((double)PP)+1)/2.0, (1/tempt), 1, 0);
-    double Fubt = ::Rf_pgamma(ubt,(((double)PP)+1)/2.0, (1/tempt), 1, 0);
+    double Fubt1 = ::Rf_pgamma(1.0,(((double)PP)+1)/2.0, (pow(tempt, -1.0)), 1, 0);
+    double Fubt = ::Rf_pgamma(ubt,(((double)PP)+1)/2.0, (pow(tempt, -1.0)), 1, 0);
     if(Fubt1>Fubt){
       Fubt1 = std::max(Fubt1 - (Fubt1-Fubt+.0001), 0.0);
     }
     double ut = ::Rf_runif(Fubt1,Fubt);
     
-    et = ::Rf_qgamma(ut,(((double)PP)+1)/2.0,(1/tempt), 1, 0);
+    et = ::Rf_qgamma(ut,(((double)PP)+1)/2.0,(pow(tempt, -1.0)), 1, 0);
     if(et < .0001){
       et = .0001;
     }
-    tau = 1/sqrt(et);
+    tau = pow(sqrt(et), -1.0);
     if(tau < .0001){
       tau = .0001;
     }
@@ -172,17 +172,17 @@ double uptau(arma::vec lambda, arma::vec beta, int qq, int PP, double tau,
     
   } else {
     tempt=arma::sum(pow(beta/lambda1,2))/(2*sigma);
-    double et = 1.0/pow(tau, 2);
-    double utau= ::Rf_runif(0.0, 1/(1+et));
+    double et = pow(pow(tau, 2), -1.0);
+    double utau= ::Rf_runif(0.0, pow((1+et), -1.0));
     double ubt = (1-utau)/utau;
-    double Fubt = ::Rf_pgamma(ubt,(((double)PP)+1)/2.0, (1/tempt), 1, 0);
+    double Fubt = ::Rf_pgamma(ubt,(((double)PP)+1)/2.0, (pow(tempt, -1.0)), 1, 0);
     Fubt = std::max(Fubt, .0001);
     double ut = ::Rf_runif(0.0,Fubt);
-    et = ::Rf_qgamma(ut,(((double)PP)+1)/2.0,(1/tempt), 1, 0);
+    et = ::Rf_qgamma(ut,(((double)PP)+1)/2.0,(pow(tempt, -1.0)), 1, 0);
     if(et < .0001){
       et = .0001;
     }
-    tau = 1/sqrt(et);
+    tau = pow(sqrt(et), -1.0);
     if(tau < .0001){
       tau = .0001;
     }
@@ -267,7 +267,7 @@ double lprior_bb(double betajk, int sjk, double sig_bejk, double mu_bejk,
   }
   else{
     return(lbeta_factor - 0.5 * log(2.0 * M_PI * sig_bejk) -
-           1.0/(2.0 * sig_bejk) * pow(betajk - mu_bejk, 2.0));
+           pow((2.0 * sig_bejk), -1.0) * pow(betajk - mu_bejk, 2.0));
   }
 }
 
@@ -1606,7 +1606,7 @@ arma::mat update_m(arma::mat m, arma::mat ksi){
   
   for(int pp2 = 0; pp2 < PP; pp2++){
     for(int qq2 = 0; qq2 < KK; qq2++){
-      u_m = 1/(1 + exp(-2 * ksi(pp2, qq2))) - ::Rf_runif(0, 1);
+      u_m = pow((1 + exp(-2 * ksi(pp2, qq2))), -1.0) - ::Rf_runif(0, 1);
       if(u_m > 0){
         m(pp2, qq2) = 1;
       } else {
@@ -1675,8 +1675,8 @@ arma::mat update_tau(arma::mat tausq, arma::mat alpha, double atau, double btau,
   
   for(int pp2 = 0; pp2 < PP; pp2++){
     for(int qq2 = pp2 + 1; qq2 < PP; qq2++){
-      b = 1/(btau + std::pow(alpha(pp2, qq2), 2.0)/(2.0 * gamma(pp2, qq2)));
-      tausq(pp2, qq2) = 1.0/::Rf_rgamma(a, b);
+      b = pow((btau + std::pow(alpha(pp2, qq2), 2.0)/(2.0 * gamma(pp2, qq2))), -1.0);
+      tausq(pp2, qq2) = pow(::Rf_rgamma(a, b), -1.0);
     }
   }
   return tausq;
@@ -3225,7 +3225,7 @@ Rcpp::List sampler_randint(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat X
   
   arma::vec uu(n);
   for(ii = 0 ; ii < n ; ii ++){
-    uu(ii) = ::Rf_rgamma(Ypiu(ii), 1.0/TT(ii));
+    uu(ii) = ::Rf_rgamma(Ypiu(ii), pow(TT(ii), -1.0));
   }
   
   //beta proposal variance
@@ -3436,9 +3436,11 @@ Rcpp::List sampler_randint(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat X
         sum_idx_tmp = arma::sum(idx_tmp);
         double rtauj;
         if(sum_idx_tmp == 0.0){
-          rtauj = 1.0/::Rf_rgamma(aig_slab, big_slab);
+          rtauj = ::Rf_rgamma(aig_slab, big_slab);
+          rtauj = pow(rtauj, -1.0);
         } else {
-          rtauj = 1.0/::Rf_rgamma(0.5 * aig_slab + 0.5 * sum_idx_tmp, 0.5 * pow(big_slab, 2.0) + 0.5 * thetavecTthetavec);
+          rtauj = ::Rf_rgamma(0.5 * aig_slab + 0.5 * sum_idx_tmp, 0.5 * pow(big_slab, 2.0) + 0.5 * thetavecTthetavec);
+          rtauj = pow(rtauj, -1.0);
         }
         sigma_theta_temp.col(jj).fill(rtauj);
       }
@@ -3530,9 +3532,11 @@ Rcpp::List sampler_randint(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat X
         
         double rtau2j;
         if(sum_idx_tmp2 == 0.0){
-          rtau2j = 1.0/::Rf_rgamma(aig_slab2, big_slab2);
+          rtau2j = ::Rf_rgamma(aig_slab2, big_slab2);
+          rtau2j = pow(rtau2j, -1.0);
         } else {
-          rtau2j = 1.0/::Rf_rgamma(0.5 * aig_slab2 + 0.5 * sum_idx_tmp2, 0.5 * pow(big_slab2, 2.0) + 0.5 * thetavecTthetavec2);
+          rtau2j = ::Rf_rgamma(0.5 * aig_slab2 + 0.5 * sum_idx_tmp2, 0.5 * pow(big_slab2, 2.0) + 0.5 * thetavecTthetavec2);
+          rtau2j = pow(rtau2j, -1.0);
         }
         sigma_theta_temp2.col(jj).fill(rtau2j);
       }
@@ -3889,7 +3893,8 @@ Rcpp::List sampler_randint(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat X
     update_rand_int(XX, ZZ, SS, loggamma, ran_int_sing, ran_int_exp, grplabel, ngroup, sig_int);
     
     for(int gg = 0; gg < ngroup; gg++){
-      sig_int(gg) = 1.0/::Rf_rgamma(asi + 0.5, bsi + (pow(ran_int_sing(gg), 2.0)/2));
+      sig_int(gg) = ::Rf_rgamma(asi + 0.5, bsi + (pow(ran_int_sing(gg), 2.0)/2));
+      sig_int(gg) = pow(sig_int(gg), -1.0);
     }
     if((s > burn) && (s % thin == 0)){
       RANDINTpost.row(curr_iter) = ran_int_exp.t();
@@ -3912,7 +3917,7 @@ Rcpp::List sampler_randint(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat X
     for(ii = 0 ; ii < n ; ii++){
       TT(ii) = 0.0;
       for(jj = 0 ; jj < JJ ; jj++){
-        SS(ii,jj) = ::Rf_rgamma(YY(ii, jj)+ exp(loggamma(ii,jj)), 1.0/(uu(ii) + 1.0));
+        SS(ii,jj) = ::Rf_rgamma(YY(ii, jj)+ exp(loggamma(ii,jj)), pow(uu(ii) + 1.0, -1.0));
         if(SS(ii,jj) < pow(10.0, -100.0)){
           SS(ii,jj) = pow(10.0, -100.0);
         }
@@ -3922,7 +3927,7 @@ Rcpp::List sampler_randint(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat X
     
     // update latent variables uu
     for(ii = 0 ; ii < n ; ii++){
-      uu(ii) = ::Rf_rgamma(Ypiu(ii), 1.0/TT(ii));
+      uu(ii) = ::Rf_rgamma(Ypiu(ii), pow(TT(ii), -1.0));
     }
   }//chiude le iterazioni della catena
   
@@ -4388,7 +4393,7 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
   
   arma::vec uu(n);
   for(ii = 0 ; ii < n ; ii ++){
-    uu(ii) = ::Rf_rgamma(Ypiu(ii), 1.0/TT(ii));
+    uu(ii) = ::Rf_rgamma(Ypiu(ii), pow(TT(ii), -1.0));
   }
   
   //beta proposal variance
@@ -4597,9 +4602,11 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
         sum_idx_tmp = arma::sum(idx_tmp);
         double rtauj;
         if(sum_idx_tmp == 0.0){
-          rtauj = 1.0/::Rf_rgamma(aig_slab, big_slab);
+          rtauj = ::Rf_rgamma(aig_slab, big_slab);
+          rtauj = pow(rtauj, -1.0);
         } else {
-          rtauj = 1.0/::Rf_rgamma(0.5 * aig_slab + 0.5 * sum_idx_tmp, 0.5 * pow(big_slab, 2.0) + 0.5 * thetavecTthetavec);
+          rtauj = ::Rf_rgamma(0.5 * aig_slab + 0.5 * sum_idx_tmp, 0.5 * pow(big_slab, 2.0) + 0.5 * thetavecTthetavec);
+          rtauj = pow(rtauj, -1.0);
         }
         sigma_theta_temp.col(jj).fill(rtauj);
       }
@@ -4691,9 +4698,11 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
         
         double rtau2j;
         if(sum_idx_tmp2 == 0.0){
-          rtau2j = 1.0/::Rf_rgamma(aig_slab2, big_slab2);
+          rtau2j = ::Rf_rgamma(aig_slab2, big_slab2);
+          rtau2j = pow(rtau2j, -1.0);
         } else {
-          rtau2j = 1.0/::Rf_rgamma(0.5 * aig_slab2 + 0.5 * sum_idx_tmp2, 0.5 * pow(big_slab2, 2.0) + 0.5 * thetavecTthetavec2);
+          rtau2j = ::Rf_rgamma(0.5 * aig_slab2 + 0.5 * sum_idx_tmp2, 0.5 * pow(big_slab2, 2.0) + 0.5 * thetavecTthetavec2);
+          rtau2j = pow(rtau2j, -1.0);
         }
         sigma_theta_temp2.col(jj).fill(rtau2j);
       }
@@ -5053,7 +5062,7 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
     for(ii = 0 ; ii < n ; ii++){
       TT(ii) = 0.0;
       for(jj = 0 ; jj < JJ ; jj++){
-        SS(ii,jj) = ::Rf_rgamma(YY(ii, jj)+ exp(loggamma(ii,jj)), 1.0/(uu(ii) + 1.0));
+        SS(ii,jj) = ::Rf_rgamma(YY(ii, jj)+ exp(loggamma(ii,jj)), pow((uu(ii) + 1.0), -1.0));
         if(SS(ii,jj) < pow(10.0, -100.0)){
           SS(ii,jj) = pow(10.0, -100.0);
         }
@@ -5063,7 +5072,7 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
     
     // update latent variables uu
     for(ii = 0 ; ii < n ; ii++){
-      uu(ii) = ::Rf_rgamma(Ypiu(ii), 1.0/TT(ii));
+      uu(ii) = ::Rf_rgamma(Ypiu(ii), pow(TT(ii), -1.0));
     }
   }//chiude le iterazioni della catena
   
