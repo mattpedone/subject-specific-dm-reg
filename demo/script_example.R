@@ -2,12 +2,14 @@ rm(list = ls())
 
 devtools::load_all()
 
-J <- 20
-n <- 50
+J <- 10
+n <- 250
 P <- 5
 Q <- 5
 
-Niter <- 30000#0
+#fast for testing
+Niter <- 300#000
+#Niter <- 3000#00
 burn <- Niter / 2
 thin <- 10
 
@@ -178,7 +180,7 @@ for (jj in 1:J) {
 }
 
 truth4 <- rep(0, length(as.vector(bizzincluded)))
-truth4[which(as.vector(interzz_true) != 0)] <- 1
+truth4[which(as.vector(data$inter_zz) != 0)] <- 1
 
 bizzincluded[is.na(bizzincluded)] <- 0
 col <- rep("orange", length(c(bizzincluded)))
@@ -197,3 +199,4 @@ plot(c(bizzincluded),
   ylab = expression(paste("Inclusion ", b[zz]))
 )
 points(which(truth4 == 1), rep(1, sum(truth4)), type="p", pch=20, cex = 1, col="red")
+
