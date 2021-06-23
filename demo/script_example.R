@@ -131,6 +131,7 @@ plot(betaincluded_l,
     0
   }))
 )
+points(which(truth_l == 1), rep(1, sum(truth_l)), type="p", pch=20, cex = 1, col="red")
 
 betaincluded_nl <- round(apply(simplify2array(out$xistarposterior) == 1, c(1, 2, 3), mean), 5)
 truth_nl <- rep(0, length(data$inter_xx_nl))
