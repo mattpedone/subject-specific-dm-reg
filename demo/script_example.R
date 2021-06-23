@@ -7,7 +7,7 @@ n <- 50
 P <- 5
 Q <- 5
 
-Niter <- 300000
+Niter <- 30000#0
 burn <- Niter / 2
 thin <- 10
 
@@ -15,7 +15,7 @@ Eff <- (Niter - burn) / thin
 
 data <- gendata(J, n, P, Q, .25, .75, 2, 2, 2, c(1, 1, 1, 1),
   corrx = 0.4, corrz = 0.4, nli = T, WH = F,
-  randint = T
+  randint = F
 )
 
 system.time(out <- ssdm(
@@ -40,21 +40,27 @@ thetaXpostM <- thetaXpost
 thetaXpostM[which(ppithetaX < .5)] <- 0.0 # this is the median model
 betaincluded1 <- rep(0, length((as.vector(thetaXpostM))))
 betaincluded1[which(as.vector(ppithetaX) > .5)] <- 1
+truth1 <- rep(0, length(betaincluded1))
+truth1[which(as.vector(data$thetax) != 0)] <- 1
 
 plot(c(ppithetaX),
   type = "h", ylim = c(0, 1), xlab = expression(paste("index for ", theta[x])),
   ylab = expression(paste("PPI ", theta[x]))
 )
+points(which(truth1 == 1), rep(1, sum(truth1)), type="p", pch=20, cex = 1, col="red")
 
 thetaZpostM <- thetaZpost
 thetaZpostM[which(ppithetaZ < .5)] <- 0.0 # this is the median model
 betaincluded2 <- rep(0, length((as.vector(thetaZpostM))))
 betaincluded2[which(as.vector(ppithetaZ) > .5)] <- 1
+truth2 <- rep(0, length(betaincluded2))
+truth2[which(as.vector(data$thetaz) != 0)] <- 1
 
 plot(c(ppithetaZ),
   type = "h", ylim = c(0, 1), xlab = expression(paste("index for ", theta[z])),
   ylab = expression(paste("PPI ", theta[z]))
 )
+points(which(truth2 == 1), rep(1, sum(truth1)), type="p", pch=20, cex = 1, col="red")
 
 bipostxz <- array(0, dim = c(P, Q, J, Eff))
 
@@ -89,6 +95,9 @@ for (jj in 1:J) {
   }
 }
 
+truth3 <- rep(0, length(as.vector(bixzincluded)))
+truth3[which(as.vector(data$inter_xz) != 0)] <- 1
+
 bixzincluded[is.na(bixzincluded)] <- 0
 col <- rep("orange", length(c(bixzincluded)))
 col[which(c(bixzincluded) != 0)] <- "blue"
@@ -106,9 +115,13 @@ plot(c(bixzincluded),
   ylab = expression(paste("Inclusion ", b[xz]))
 )
 
+points(which(truth3 == 1), rep(1, sum(truth3)), type="p", pch=20, cex = 1, col="red")
+
 # interazioni xx
 
 betaincluded_l <- round(apply(simplify2array(out$xi0posterior) == 1, c(1, 2, 3), mean), 5)
+truth_l <- rep(0, length(data$inter_xx))
+truth_l[which(as.vector(data$inter_xx != 0))] <- 1
 
 plot(betaincluded_l,
   type = "h", ylim = c(0, 1), xlab = expression(paste("index for ", alpha^{
@@ -120,11 +133,14 @@ plot(betaincluded_l,
 )
 
 betaincluded_nl <- round(apply(simplify2array(out$xistarposterior) == 1, c(1, 2, 3), mean), 5)
+truth_nl <- rep(0, length(data$inter_xx_nl))
+truth_nl[which(as.vector(data$inter_xx_nl != 0))] <- 1
 
 plot(betaincluded_nl,
   type = "h", ylim = c(0, 1), xlab = expression(paste("index for ", alpha, "*")),
   ylab = expression(paste("PPI ", alpha, "*"))
 )
+points(which(truth_nl == 1), rep(1, sum(truth_nl)), type="p", pch=20, cex = 1, col="red")
 
 # interazioni zz
 bipostzz <- array(0, dim = c(Q, Q, J, Eff))
@@ -160,6 +176,9 @@ for (jj in 1:J) {
   }
 }
 
+truth4 <- rep(0, length(as.vector(bizzincluded)))
+truth4[which(as.vector(interzz_true) != 0)] <- 1
+
 bizzincluded[is.na(bizzincluded)] <- 0
 col <- rep("orange", length(c(bizzincluded)))
 col[which(c(bizzincluded) != 0)] <- "blue"
@@ -176,3 +195,4 @@ plot(c(bizzincluded),
   type = "h", ylim = c(0, 1), xlab = expression(paste("index for ", b[zz])),
   ylab = expression(paste("Inclusion ", b[zz]))
 )
+points(which(truth4 == 1), rep(1, sum(truth4)), type="p", pch=20, cex = 1, col="red")
