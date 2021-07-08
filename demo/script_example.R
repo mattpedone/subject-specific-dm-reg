@@ -8,14 +8,14 @@ P <- 5
 Q <- 5
 
 #fast for testing
-Niter <- 300#000
+Niter <- 3000#00
 #Niter <- 3000#00
 burn <- Niter / 2
 thin <- 10
 
 Eff <- (Niter - burn) / thin
 
-data <- gendata(J, n, P, Q, .25, .75, 2, 2, 2, c(1, 1, 1, 1),
+data <- gendata(J, n, P, Q, .25, .75, 2, 2, 2, c(0, 0, 4, 4),
   corrx = 0.4, corrz = 0.4, nli = T, WH = F,
   randint = F
 )
