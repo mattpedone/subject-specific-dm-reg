@@ -3,25 +3,32 @@ rm(list = ls())
 devtools::load_all()
 
 J <- 10
-n <- 250
+n <- 150
 P <- 5
 Q <- 5
 
 #fast for testing
-Niter <- 3000#00
+Niter <- 10000#00#0
 #Niter <- 3000#00
 burn <- Niter / 2
 thin <- 10
 
 Eff <- (Niter - burn) / thin
 
-data <- gendata(J, n, P, Q, .25, .75, 2, 2, 2, c(0, 0, 4, 4),
-  corrx = 0.4, corrz = 0.4, nli = T, WH = F,
+data <- gendata(J, n, P, Q, .25, .75, 2, 2, 2, c(0, 0, 2, 2),
+  corrx = 0.4, corrz = 0.4, nli = F, WH = F,
   randint = F
 )
+store <- matrix(0, 30, 3)
+for(k in 1:30){
+X <- data$X
+Z <- data$Z
+
+perm <- sample(1:5, 5, F)#c(1, 2, 3, 4, 5)#
+invperm <- Matrix::invPerm(perm)#c(1, 2, 3, 4, 5)#
 
 system.time(out <- ssdm(
-  YY = data$Y, XX = data$X, ZZ = data$Z, Niter = Niter, burn = burn,
+  YY = data$Y, XX = X[,perm], ZZ = Z[,perm], Niter = Niter, burn = burn,
   penmig_lin = c(5, 25, 0.00025, 1.00, 1.00),
   penmig_nl = c(5, 25, 0.00025, 1.00, 1.00),
   thin = thin, randint = FALSE, hereditariety = 2, init = TRUE,
@@ -40,12 +47,12 @@ ppithetaZ <- apply((out$thetazposterior != 0), c(1, 2), mean)
 
 thetaXpostM <- thetaXpost
 thetaXpostM[which(ppithetaX < .5)] <- 0.0 # this is the median model
-betaincluded1 <- rep(0, length((as.vector(thetaXpostM))))
-betaincluded1[which(as.vector(ppithetaX) > .5)] <- 1
+betaincluded1 <- rep(0, length((as.vector(thetaXpostM[invperm,]))))
+betaincluded1[which(as.vector(ppithetaX[invperm,]) > .5)] <- 1
 truth1 <- rep(0, length(betaincluded1))
 truth1[which(as.vector(data$thetax) != 0)] <- 1
 
-plot(c(ppithetaX),
+plot(c(ppithetaX[invperm,]),
   type = "h", ylim = c(0, 1), xlab = expression(paste("index for ", theta[x])),
   ylab = expression(paste("PPI ", theta[x]))
 )
@@ -53,12 +60,12 @@ points(which(truth1 == 1), rep(1, sum(truth1)), type="p", pch=20, cex = 1, col="
 
 thetaZpostM <- thetaZpost
 thetaZpostM[which(ppithetaZ < .5)] <- 0.0 # this is the median model
-betaincluded2 <- rep(0, length((as.vector(thetaZpostM))))
-betaincluded2[which(as.vector(ppithetaZ) > .5)] <- 1
+betaincluded2 <- rep(0, length((as.vector(thetaZpostM[invperm,]))))
+betaincluded2[which(as.vector(ppithetaZ[invperm,]) > .5)] <- 1
 truth2 <- rep(0, length(betaincluded2))
 truth2[which(as.vector(data$thetaz) != 0)] <- 1
 
-plot(c(ppithetaZ),
+plot(c(ppithetaZ[invperm,]),
   type = "h", ylim = c(0, 1), xlab = expression(paste("index for ", theta[z])),
   ylab = expression(paste("PPI ", theta[z]))
 )
@@ -200,3 +207,24 @@ plot(c(bizzincluded),
 )
 points(which(truth4 == 1), rep(1, sum(truth4)), type="p", pch=20, cex = 1, col="red")
 
+
+lab <- c("tpr", "fpr", "mcc")
+calculate_statistics <- function(tbl) {
+  tbl <- tbl/1000
+  tpr <- tbl[2,2]/sum(tbl[,2])
+  fpr <- tbl[2,1]/sum(tbl[,1])
+  num <- (tbl[2,2] * tbl[1,1]) - (tbl[2,1] * tbl[1,2])
+  den <- (sum(tbl[2,])) * (sum(tbl[,2])) * (sum(tbl[,1])) * (sum(tbl[1,]))
+  mcc <- num/sqrt(den)
+  res <- c(tpr, fpr, mcc)
+  return(res)
+}
+
+pp_pred <- c(betaincluded1, betaincluded2, bixzincluded[invperm, invperm,], bizzincluded[invperm, invperm,])
+pp_act <- c(truth1, truth2, truth3, truth4)
+tbl <- table(pp_pred, pp_act)
+store[k, ] <- calculate_statistics(tbl)
+}
+
+apply(store, 2, mean)
+sqrt(apply(store, 2, var))

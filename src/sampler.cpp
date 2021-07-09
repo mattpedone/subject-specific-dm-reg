@@ -4791,6 +4791,7 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
     lambda_hs.row(jj) = uplam(lambda_hs.row(jj), bi_work, pp, tau_hs(ll));
     tau_hs(ll) = uptau(lambda_hs.row(jj).t(), bi_work, pp, QQ, tau_hs(ll), true);
     
+    /*
     //peNMIG parte lineare
     u = arma::randu();
     u = u*(double)JJ;
@@ -4878,7 +4879,7 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
       GAMMA_NL[curr_iter] = gamma_nl;
       OMEGA_NL.slice(curr_iter) = omega_nl;
     }
-    
+    */
     ///////////////////////////
     //    AGGIORNO SOGLIA1   //
     ///////////////////////////

@@ -122,8 +122,8 @@ gendata <- function(J = 10, n = 100, P = 10, Q = 5, beta_min = 0.75, beta_max = 
 
   inter_xz <- array(0, dim = c(P, Q, J))
   # interactions xz
+  count <- 0
   for (j in 1:J) {
-    count <- 0
     for (p in 1:P) {
       for (q in 1:Q) {
         if ((thetaX[p, j] != 0) & (thetaZ[q, j] != 0)) {
@@ -146,8 +146,8 @@ gendata <- function(J = 10, n = 100, P = 10, Q = 5, beta_min = 0.75, beta_max = 
 
   inter_zz <- array(0, dim = c(Q, Q, J))
   # interactions zz
+  count <- 0
   for (j in 1:J) {
-    count <- 0
     for (p in 1:Q) {
       for (q in 1:Q) {
         if (q > p) {
@@ -172,8 +172,8 @@ gendata <- function(J = 10, n = 100, P = 10, Q = 5, beta_min = 0.75, beta_max = 
 
   inter_xx <- array(0, dim = c(P, P, J))
   # interactions xx
+  count <- 0
   for (j in 1:J) {
-    count <- 0
     for (p in 1:P) {
       for (q in 1:P) {
         if (q > p) {
@@ -201,8 +201,8 @@ gendata <- function(J = 10, n = 100, P = 10, Q = 5, beta_min = 0.75, beta_max = 
   inter_xx_nl <- array(0, dim = c(n, P, J))
   nlind <- array(0, dim = c(P, P, J))
   if (nli == TRUE) {
+    count <- 0
     for (j in 1:J) {
-      count <- 0
       for (p in 1:P) {
         for (q in 1:P) {
           if (q > p) {
