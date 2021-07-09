@@ -121,54 +121,54 @@ gendata <- function(J = 10, n = 100, P = 10, Q = 5, beta_min = 0.75, beta_max = 
   thetaZ <- t(thetaZ)
 
   inter_xz <- array(0, dim = c(P, Q, J))
-  # interactions xz
-  count <- 0
-  for (j in 1:J) {
-    for (p in 1:P) {
-      for (q in 1:Q) {
-        if ((thetaX[p, j] != 0) & (thetaZ[q, j] != 0)) {
-          if (count <= n_rel_inter[1]) {
-            inter_xz[p, q, j] <- thetaX[p, j] * thetaZ[q, j]#sample(c(thetaX[p, j] * thetaZ[q, j], 0), 1)
-            count <- count + 1
-          }
-        }
-        if (WH == T) {
-          if ((thetaX[p, j] != 0) | (thetaX[q, j] != 0)) {
-            if (count <= n_rel_inter[1]) {
-              inter_xz[p, q, j] <- thetaX[p, j] * thetaZ[q, j]
-              count <- count + 1
-            }
-          }
-        }
-      }
-    }
-  }
-
+#  # interactions xz
+#  count <- 0
+#  for (j in 1:J) {
+#    for (p in 1:P) {
+#      for (q in 1:Q) {
+#        if ((thetaX[p, j] != 0) & (thetaZ[q, j] != 0)) {
+#          if (count <= n_rel_inter[1]) {
+#            inter_xz[p, q, j] <- thetaX[p, j] * thetaZ[q, j]#sample(c(thetaX[p, j] * thetaZ[q, j], 0), 1)
+#            count <- count + 1
+#          }
+#        }
+#        if (WH == T) {
+#          if ((thetaX[p, j] != 0) | (thetaX[q, j] != 0)) {
+#            if (count <= n_rel_inter[1]) {
+#              inter_xz[p, q, j] <- thetaX[p, j] * thetaZ[q, j]
+#              count <- count + 1
+#            }
+#          }
+#        }
+#      }
+#    }
+#  }
+#
   inter_zz <- array(0, dim = c(Q, Q, J))
   # interactions zz
-  count <- 0
-  for (j in 1:J) {
-    for (p in 1:Q) {
-      for (q in 1:Q) {
-        if (q > p) {
-          if ((thetaZ[p, j] != 0) & (thetaZ[q, j] != 0)) {
-            if (count <= n_rel_inter[2]) {
-              inter_zz[p, q, j] <- thetaZ[p, j] * thetaZ[q, j]
-              count <- count + 1
-            }
-          }
-          if (WH == T) {
-            if ((thetaZ[p, j] != 0) | (thetaZ[q, j] != 0)) {
-              if (count <= n_rel_inter[2]) {
-                inter_zz[p, q, j] <- c(thetaZ[p, j] * thetaZ[q, j])
-                count <- count + 1
-              }
-            }
-          }
-        }
-      }
-    }
-  }
+#  count <- 0
+#  for (j in 1:J) {
+#    for (p in 1:Q) {
+#      for (q in 1:Q) {
+#        if (q > p) {
+#          if ((thetaZ[p, j] != 0) & (thetaZ[q, j] != 0)) {
+#            if (count <= n_rel_inter[2]) {
+#              inter_zz[p, q, j] <- thetaZ[p, j] * thetaZ[q, j]
+#              count <- count + 1
+#            }
+#          }
+#          if (WH == T) {
+#            if ((thetaZ[p, j] != 0) | (thetaZ[q, j] != 0)) {
+#              if (count <= n_rel_inter[2]) {
+#                inter_zz[p, q, j] <- c(thetaZ[p, j] * thetaZ[q, j])
+#                count <- count + 1
+#              }
+#            }
+#          }
+#        }
+#      }
+#    }
+#  }
 
   inter_xx <- array(0, dim = c(P, P, J))
   # interactions xx
@@ -179,7 +179,7 @@ gendata <- function(J = 10, n = 100, P = 10, Q = 5, beta_min = 0.75, beta_max = 
         if (q > p) {
           if ((thetaX[p, j] != 0) & (thetaX[q, j] != 0)) {
             if (count <= n_rel_inter[3]) {
-              inter_xx[p, q, j] <- thetaX[p, j] * thetaX[q, j]
+              inter_xx[p, q, j] <- 10#thetaX[p, j] * thetaX[q, j]
               count <- count + 1
             }
           }
@@ -187,7 +187,7 @@ gendata <- function(J = 10, n = 100, P = 10, Q = 5, beta_min = 0.75, beta_max = 
             if ((thetaX[p, j] != 0) | (thetaX[q, j] != 0)) {
               if (count <= n_rel_inter[3]) {
                 if (stats::runif(1) < .5) {
-                  inter_xx[p, q, j] <- thetaX[p, j] * thetaX[q, j]
+                  inter_xx[p, q, j] <- 3#thetaX[p, j] * thetaX[q, j]
                 }
                 count <- count + 1
               }
@@ -208,7 +208,7 @@ gendata <- function(J = 10, n = 100, P = 10, Q = 5, beta_min = 0.75, beta_max = 
           if (q > p) {
             if (inter_xx[p, q, j] != 0) {
               if (count <= n_rel_inter[4]) {
-                inter_xx_nl[, p, j] <- 1.5 * (X[, q]^2 - 1)
+                inter_xx_nl[, p, j] <- 3.5 * (X[, q]^2 - 1)
                 count <- count + 1
                 nlind[p, q, j] <- 1
               }

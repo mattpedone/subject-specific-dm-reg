@@ -4364,12 +4364,12 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
     for(int qq2 = 0; qq2 < QQ; qq2 ++){
       for(int pp2 = 0; pp2 < PP; pp2 ++){
         int hh2 = qq2+((pp2)*QQ);
-        bXZ(pp2, qq2)=bi_xz(jj, hh2);
+        bXZ(pp2, qq2)=0;//bi_xz(jj, hh2);
       }
       
       for(int pp2 = 0; pp2 < QQ; pp2 ++){
         int hh2 = qq2+((pp2)*QQ);
-        bZZ(pp2, qq2)=bi_zz(jj, hh2);
+        bZZ(pp2, qq2)=0;//bi_zz(jj, hh2);
       }
     }
     loggamma.col(jj) = calculate_gamma(XX, ZZ, XXl, XXT, alpha, theta, theta2, bXZ,
@@ -4471,10 +4471,10 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
   
   arma::cube THETApost(PP, JJ, Eff);
   arma::cube THETApost2(QQ, JJ, Eff);
-  arma::cube BIpost(JJ, (PP*QQ), Eff);
+  arma::cube BIpost(JJ, (PP*QQ), Eff, arma::fill::zeros);
   arma::cube hBIpost(n, PP, JJ, arma::fill::zeros);
   arma::cube hBIpost_ppi(n, PP, JJ, arma::fill::zeros);
-  arma::cube BIpost2(JJ, (QQ * QQ), Eff);
+  arma::cube BIpost2(JJ, (QQ * QQ), Eff, arma::fill::zeros);
   arma::cube hBIpost2(n, QQ, JJ, arma::fill::zeros);
   arma::cube LOGLINPRED(n, JJ, Eff);
   arma::vec llvec(Eff);
@@ -4712,7 +4712,7 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
     ///////////////////////////
     // AGGIORNO INTERAZIONI1 //
     ///////////////////////////
-    
+    /*
     u = arma::randu();
     u = u*(JJ/1.0);
     jj = Rcpp::as<int>(Rcpp::wrap(std::floor(u)));
@@ -4791,7 +4791,7 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
     lambda_hs.row(jj) = uplam(lambda_hs.row(jj), bi_work, pp, tau_hs(ll));
     tau_hs(ll) = uptau(lambda_hs.row(jj).t(), bi_work, pp, QQ, tau_hs(ll), true);
     
-    /*
+    */
     //peNMIG parte lineare
     u = arma::randu();
     u = u*(double)JJ;
@@ -4879,7 +4879,7 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
       GAMMA_NL[curr_iter] = gamma_nl;
       OMEGA_NL.slice(curr_iter) = omega_nl;
     }
-    */
+    
     ///////////////////////////
     //    AGGIORNO SOGLIA1   //
     ///////////////////////////
@@ -4905,7 +4905,7 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
         for(int qq2 = 0; qq2 < QQ; qq2++){
           for(int pp2 = 0; pp2 < PP; pp2++){
             int hh2 = qq2 + ((pp2) * QQ);
-            bXZ(pp2, qq2) = bi_xz(jj, hh2);
+            bXZ(pp2, qq2) = 0;//bi_xz(jj, hh2);
           }
         }
         work = (bXZ * ZZ.t()).t() + (bi_lin_xx.slice(jj) * XXl.t()).t()
@@ -4917,7 +4917,7 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
     ///////////////////////////
     // AGGIORNO INTERAZIONI2 //
     ///////////////////////////
-    
+    /*
     u = arma::randu();
     u = u*(JJ/1.0);
     jj = Rcpp::as<int>(Rcpp::wrap(std::floor(u)));
@@ -4999,7 +4999,7 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
     
     lambda_hs2.row(jj) = uplam(lambda_hs2.row(jj), bi_work2, pp, tau_hs2(ll));
     tau_hs2(ll) = uptau(lambda_hs2.row(jj).t(), bi_work2, qq, QQ, tau_hs2(ll), true);
-    
+    */
     ///////////////////////////
     //    AGGIORNO SOGLIA2   //
     ///////////////////////////
@@ -5012,7 +5012,7 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
       acc_soglia_flag(1)=0;
       SOGLIApost2(curr_iter) = soglia2;
     }
-    
+    /*
     ///////////////////////////
     //    Eff. Sub-Spec. 2   //
     ///////////////////////////
@@ -5032,7 +5032,7 @@ Rcpp::List sampler(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma
         hBIpost2.slice(jj) = hBIpost2.slice(jj) + threshold_mat(work, soglia);
       }
     }
-    
+    */
     //////////////////////////
     // AGGIORNO INTERCETTE ///
     //////////////////////////

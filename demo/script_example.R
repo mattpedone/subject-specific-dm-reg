@@ -2,10 +2,10 @@ rm(list = ls())
 
 devtools::load_all()
 
-J <- 10
-n <- 150
-P <- 5
-Q <- 5
+J <- 6
+n <- 250
+P <- 13
+Q <- 2
 
 #fast for testing
 Niter <- 10000#00#0
@@ -15,8 +15,8 @@ thin <- 10
 
 Eff <- (Niter - burn) / thin
 
-data <- gendata(J, n, P, Q, .25, .75, 2, 2, 2, c(0, 0, 2, 2),
-  corrx = 0.4, corrz = 0.4, nli = F, WH = F,
+data <- gendata(J, n, P, Q, 1.25, 1.75, 2, 5, 1, c(0, 0, 2, 2),
+  corrx = 0.4, corrz = 0.4, nli = T, WH = F,
   randint = F
 )
 store <- matrix(0, 30, 3)
@@ -24,11 +24,13 @@ for(k in 1:30){
 X <- data$X
 Z <- data$Z
 
-perm <- sample(1:5, 5, F)#c(1, 2, 3, 4, 5)#
-invperm <- Matrix::invPerm(perm)#c(1, 2, 3, 4, 5)#
+permX <- seq(1:P)#sample(1:P, P, F)#
+invpermX <- seq(1:P)#Matrix::invPerm(permX)#
+permZ <- seq(1:Q)#sample(1:P, P, F)#
+invpermZ <- seq(1:Q)#Matrix::invPerm(permX)#
 
 system.time(out <- ssdm(
-  YY = data$Y, XX = X[,perm], ZZ = Z[,perm], Niter = Niter, burn = burn,
+  YY = data$Y, XX = X[,permX], ZZ = Z[,permZ], Niter = Niter, burn = burn,
   penmig_lin = c(5, 25, 0.00025, 1.00, 1.00),
   penmig_nl = c(5, 25, 0.00025, 1.00, 1.00),
   thin = thin, randint = FALSE, hereditariety = 2, init = TRUE,
@@ -47,12 +49,12 @@ ppithetaZ <- apply((out$thetazposterior != 0), c(1, 2), mean)
 
 thetaXpostM <- thetaXpost
 thetaXpostM[which(ppithetaX < .5)] <- 0.0 # this is the median model
-betaincluded1 <- rep(0, length((as.vector(thetaXpostM[invperm,]))))
-betaincluded1[which(as.vector(ppithetaX[invperm,]) > .5)] <- 1
+betaincluded1 <- rep(0, length((as.vector(thetaXpostM[invpermX,]))))
+betaincluded1[which(as.vector(ppithetaX[invpermX,]) > .5)] <- 1
 truth1 <- rep(0, length(betaincluded1))
 truth1[which(as.vector(data$thetax) != 0)] <- 1
 
-plot(c(ppithetaX[invperm,]),
+plot(c(ppithetaX[invpermX,]),
   type = "h", ylim = c(0, 1), xlab = expression(paste("index for ", theta[x])),
   ylab = expression(paste("PPI ", theta[x]))
 )
@@ -60,16 +62,16 @@ points(which(truth1 == 1), rep(1, sum(truth1)), type="p", pch=20, cex = 1, col="
 
 thetaZpostM <- thetaZpost
 thetaZpostM[which(ppithetaZ < .5)] <- 0.0 # this is the median model
-betaincluded2 <- rep(0, length((as.vector(thetaZpostM[invperm,]))))
-betaincluded2[which(as.vector(ppithetaZ[invperm,]) > .5)] <- 1
+betaincluded2 <- rep(0, length((as.vector(thetaZpostM[invpermZ,]))))
+betaincluded2[which(as.vector(ppithetaZ[invpermZ,]) > .5)] <- 1
 truth2 <- rep(0, length(betaincluded2))
 truth2[which(as.vector(data$thetaz) != 0)] <- 1
 
-plot(c(ppithetaZ[invperm,]),
+plot(c(ppithetaZ[invpermZ,]),
   type = "h", ylim = c(0, 1), xlab = expression(paste("index for ", theta[z])),
   ylab = expression(paste("PPI ", theta[z]))
 )
-points(which(truth2 == 1), rep(1, sum(truth1)), type="p", pch=20, cex = 1, col="red")
+points(which(truth2 == 1), rep(1, sum(truth2)), type="p", pch=20, cex = 1, col="red")
 
 bipostxz <- array(0, dim = c(P, Q, J, Eff))
 
@@ -143,14 +145,17 @@ plot(betaincluded_l,
 points(which(truth_l == 1), rep(1, sum(truth_l)), type="p", pch=20, cex = 1, col="red")
 
 betaincluded_nl <- round(apply(simplify2array(out$xistarposterior) == 1, c(1, 2, 3), mean), 5)
-truth_nl <- rep(0, length(data$inter_xx_nl))
-truth_nl[which(as.vector(data$inter_xx_nl != 0))] <- 1
+truth_nl <- rep(0, length(data$nlind))#rep(0, length(data$inter_xx_nl))
+#truth_nl[which(as.vector(data$inter_xx_nl != 0))] <- 1
+truth_nl[which(as.vector(data$nlind != 0))] <- 1
 
 plot(betaincluded_nl,
   type = "h", ylim = c(0, 1), xlab = expression(paste("index for ", alpha, "*")),
   ylab = expression(paste("PPI ", alpha, "*"))
 )
 points(which(truth_nl == 1), rep(1, sum(truth_nl)), type="p", pch=20, cex = 1, col="red")
+betaincluded_l <- ifelse(betaincluded_l >0.01, 1, 0)
+betaincluded_nl <- ifelse(betaincluded_nl >0.01, 1, 0)
 
 # interazioni zz
 bipostzz <- array(0, dim = c(Q, Q, J, Eff))
@@ -220,11 +225,12 @@ calculate_statistics <- function(tbl) {
   return(res)
 }
 
-pp_pred <- c(betaincluded1, betaincluded2, bixzincluded[invperm, invperm,], bizzincluded[invperm, invperm,])
-pp_act <- c(truth1, truth2, truth3, truth4)
+pp_pred <- c(betaincluded1, betaincluded2, betaincluded_l, betaincluded_nl)
+pp_act <- c(truth1, truth2, truth_l, truth_nl)
 tbl <- table(pp_pred, pp_act)
 store[k, ] <- calculate_statistics(tbl)
 }
-
+#calculate_statistics(tbl)
 apply(store, 2, mean)
 sqrt(apply(store, 2, var))
+#table(betaincluded_nl, truth_nl)
