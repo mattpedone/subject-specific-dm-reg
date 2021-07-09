@@ -20,12 +20,12 @@ data <- gendata(J, n, P, Q, 1.25, 1.75, 2, 5, 1, c(0, 0, 2, 2),
   randint = F
 )
 store <- matrix(0, 30, 3)
-for(k in 1:30){
+#for(k in 1:30){
 X <- data$X
 Z <- data$Z
 
-permX <- seq(1:P)#sample(1:P, P, F)#
-invpermX <- seq(1:P)#Matrix::invPerm(permX)#
+permX <- sample(1:P, P, F)#seq(1:P)#
+invpermX <- Matrix::invPerm(permX)#seq(1:P)#
 permZ <- seq(1:Q)#sample(1:P, P, F)#
 invpermZ <- seq(1:Q)#Matrix::invPerm(permX)#
 
@@ -131,6 +131,7 @@ points(which(truth3 == 1), rep(1, sum(truth3)), type="p", pch=20, cex = 1, col="
 # interazioni xx
 
 betaincluded_l <- round(apply(simplify2array(out$xi0posterior) == 1, c(1, 2, 3), mean), 5)
+betaincluded_l <- betaincluded_l[invpermX,invpermX,]
 truth_l <- rep(0, length(data$inter_xx))
 truth_l[which(as.vector(data$inter_xx != 0))] <- 1
 
@@ -145,6 +146,7 @@ plot(betaincluded_l,
 points(which(truth_l == 1), rep(1, sum(truth_l)), type="p", pch=20, cex = 1, col="red")
 
 betaincluded_nl <- round(apply(simplify2array(out$xistarposterior) == 1, c(1, 2, 3), mean), 5)
+betaincluded_l <- betaincluded_l[invpermX,invpermX,]
 truth_nl <- rep(0, length(data$nlind))#rep(0, length(data$inter_xx_nl))
 #truth_nl[which(as.vector(data$inter_xx_nl != 0))] <- 1
 truth_nl[which(as.vector(data$nlind != 0))] <- 1
