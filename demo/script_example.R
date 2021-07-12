@@ -2,10 +2,10 @@ rm(list = ls())
 
 devtools::load_all()
 
-J <- 6
-n <- 250
-P <- 13
-Q <- 2
+J <- 10
+n <- 100
+P <- 5
+Q <- 5
 
 #fast for testing
 Niter <- 10000#00#0
@@ -15,22 +15,82 @@ thin <- 10
 
 Eff <- (Niter - burn) / thin
 
-data <- gendata(J, n, P, Q, 1.25, 1.75, 2, 5, 1, c(0, 0, 2, 2),
+data <- gendata(J, n, P, Q, 1.25, 1.75, 2, 2, 2, c(0, 0, 2, 2),
   corrx = 0.4, corrz = 0.4, nli = T, WH = F,
   randint = F
 )
-store <- matrix(0, 30, 3)
+
+data50 <- gendata(50, n, P, Q, 1.25, 1.75,2, 2, 2, c(0, 0, 2, 2),
+                  corrx = 0.4, corrz = 0.4, nli = T, WH = F,
+                  randint = F
+)
+
+data100 <- gendata(100, n, P, Q, 1.25, 1.75,2, 2, 2, c(0, 0, 2, 2),
+                  corrx = 0.4, corrz = 0.4, nli = T, WH = F,
+                  randint = F
+)
+
+data150 <- gendata(150, n, P, Q, 1.25, 1.75, 2, 2, 2, c(0, 0, 2, 2),
+                  corrx = 0.4, corrz = 0.4, nli = T, WH = F,
+                  randint = F
+)
+
+#store <- matrix(0, 30, 3)
 #for(k in 1:30){
-X <- data$X
-Z <- data$Z
+X10 <- data10$X
+Z10 <- data10$Z
+
+X50 <- data50$X
+Z50 <- data50$Z
+
+X100 <- data100$X
+Z100 <- data100$Z
+
+X150 <- data150$X
+Z150 <- data150$Z
 
 permX <- sample(1:P, P, F)#seq(1:P)#
 invpermX <- Matrix::invPerm(permX)#seq(1:P)#
 permZ <- seq(1:Q)#sample(1:P, P, F)#
 invpermZ <- seq(1:Q)#Matrix::invPerm(permX)#
 
+
+tab <- rbenchmark::benchmark("J=10" = {ssdm(
+  YY = data10$Y, XX = X10, ZZ = Z10, Niter = 1000, burn = 500,
+  penmig_lin = c(5, 25, 0.00025, 1.00, 1.00),
+  penmig_nl = c(5, 25, 0.00025, 1.00, 1.00),
+  thin = 10, randint = FALSE, hereditariety = 2, init = TRUE,
+  init_fd = 0.1, conlnl = TRUE
+)}, 
+"J=50" = {ssdm(
+  YY = data50$Y, XX = X50, ZZ = Z50, Niter = 1000, burn = 500,
+  penmig_lin = c(5, 25, 0.00025, 1.00, 1.00),
+  penmig_nl = c(5, 25, 0.00025, 1.00, 1.00),
+  thin = 10, randint = FALSE, hereditariety = 2, init = TRUE,
+  init_fd = 0.1, conlnl = TRUE
+)}, 
+"J=100" = {ssdm(
+  YY = data100$Y, XX = X100, ZZ = Z100, Niter = 1000, burn = 500,
+  penmig_lin = c(5, 25, 0.00025, 1.00, 1.00),
+  penmig_nl = c(5, 25, 0.00025, 1.00, 1.00),
+  thin = 10, randint = FALSE, hereditariety = 2, init = TRUE,
+  init_fd = 0.1, conlnl = TRUE
+)}, 
+"J=150" = {ssdm(
+  YY = data150$Y, XX = X150, ZZ = Z150, Niter = 1000, burn = 500,
+  penmig_lin = c(5, 25, 0.00025, 1.00, 1.00),
+  penmig_nl = c(5, 25, 0.00025, 1.00, 1.00),
+  thin = 10, randint = FALSE, hereditariety = 2, init = TRUE,
+  init_fd = 0.1, conlnl = TRUE
+)},
+replications = 10,
+columns = c("test", "replications", "elapsed",
+            "relative", "user.self", "sys.self"))
+
+tab
+
 system.time(out <- ssdm(
-  YY = data$Y, XX = X[,permX], ZZ = Z[,permZ], Niter = Niter, burn = burn,
+  YY = data$Y, XX = data$X[,permX], ZZ = data$Z[,permZ], Niter = Niter, burn = burn,
   penmig_lin = c(5, 25, 0.00025, 1.00, 1.00),
   penmig_nl = c(5, 25, 0.00025, 1.00, 1.00),
   thin = thin, randint = FALSE, hereditariety = 2, init = TRUE,
@@ -236,3 +296,5 @@ store[k, ] <- calculate_statistics(tbl)
 apply(store, 2, mean)
 sqrt(apply(store, 2, var))
 #table(betaincluded_nl, truth_nl)
+
+benchmark::
