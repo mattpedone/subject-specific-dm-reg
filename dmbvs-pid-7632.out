@@ -1,0 +1,120 @@
+***********************************************************
+********************* Starting dmbvs **********************
+***********************************************************
+*************************** MCMC **************************
+Total iterations = 100001, Thinning = 10, Burnin = 50001
+External seed = 439667, GSL seed = 2588675959, Generator type: mt19937
+Text output deposited in directory:
+ demo/raffaele/results/output-pid-7632
+***********************************************************
+*************************** Data **************************
+# of categories = 11, # of observations = 100, # of covariates = 55
+***********************************************************
+********************* Hyperparameters *********************
+Slab variance = 10.0, Intercept variance = 10.0
+Beta-Bernoulli alpha = 0.02, Beta-Bernoulli beta = 1.98
+***********************************************************
+***********************************************************
+Starting the sampler
+Starting the 0th iteration out of 100001 at Mon Jul 12 12:08:58 2021
+Starting the 1000th iteration out of 100001 at Mon Jul 12 12:08:59 2021
+Starting the 2000th iteration out of 100001 at Mon Jul 12 12:09:00 2021
+Starting the 3000th iteration out of 100001 at Mon Jul 12 12:09:01 2021
+Starting the 4000th iteration out of 100001 at Mon Jul 12 12:09:02 2021
+Starting the 5000th iteration out of 100001 at Mon Jul 12 12:09:03 2021
+Starting the 6000th iteration out of 100001 at Mon Jul 12 12:09:04 2021
+Starting the 7000th iteration out of 100001 at Mon Jul 12 12:09:05 2021
+Starting the 8000th iteration out of 100001 at Mon Jul 12 12:09:06 2021
+Starting the 9000th iteration out of 100001 at Mon Jul 12 12:09:07 2021
+Starting the 10000th iteration out of 100001 at Mon Jul 12 12:09:08 2021
+Starting the 11000th iteration out of 100001 at Mon Jul 12 12:09:09 2021
+Starting the 12000th iteration out of 100001 at Mon Jul 12 12:09:10 2021
+Starting the 13000th iteration out of 100001 at Mon Jul 12 12:09:11 2021
+Starting the 14000th iteration out of 100001 at Mon Jul 12 12:09:11 2021
+Starting the 15000th iteration out of 100001 at Mon Jul 12 12:09:12 2021
+Starting the 16000th iteration out of 100001 at Mon Jul 12 12:09:13 2021
+Starting the 17000th iteration out of 100001 at Mon Jul 12 12:09:14 2021
+Starting the 18000th iteration out of 100001 at Mon Jul 12 12:09:15 2021
+Starting the 19000th iteration out of 100001 at Mon Jul 12 12:09:16 2021
+Starting the 20000th iteration out of 100001 at Mon Jul 12 12:09:17 2021
+Starting the 21000th iteration out of 100001 at Mon Jul 12 12:09:18 2021
+Starting the 22000th iteration out of 100001 at Mon Jul 12 12:09:19 2021
+Starting the 23000th iteration out of 100001 at Mon Jul 12 12:09:20 2021
+Starting the 24000th iteration out of 100001 at Mon Jul 12 12:09:21 2021
+Starting the 25000th iteration out of 100001 at Mon Jul 12 12:09:22 2021
+Starting the 26000th iteration out of 100001 at Mon Jul 12 12:09:23 2021
+Starting the 27000th iteration out of 100001 at Mon Jul 12 12:09:24 2021
+Starting the 28000th iteration out of 100001 at Mon Jul 12 12:09:25 2021
+Starting the 29000th iteration out of 100001 at Mon Jul 12 12:09:26 2021
+Starting the 30000th iteration out of 100001 at Mon Jul 12 12:09:27 2021
+Starting the 31000th iteration out of 100001 at Mon Jul 12 12:09:28 2021
+Starting the 32000th iteration out of 100001 at Mon Jul 12 12:09:29 2021
+Starting the 33000th iteration out of 100001 at Mon Jul 12 12:09:30 2021
+Starting the 34000th iteration out of 100001 at Mon Jul 12 12:09:31 2021
+Starting the 35000th iteration out of 100001 at Mon Jul 12 12:09:32 2021
+Starting the 36000th iteration out of 100001 at Mon Jul 12 12:09:32 2021
+Starting the 37000th iteration out of 100001 at Mon Jul 12 12:09:33 2021
+Starting the 38000th iteration out of 100001 at Mon Jul 12 12:09:34 2021
+Starting the 39000th iteration out of 100001 at Mon Jul 12 12:09:35 2021
+Starting the 40000th iteration out of 100001 at Mon Jul 12 12:09:36 2021
+Starting the 41000th iteration out of 100001 at Mon Jul 12 12:09:37 2021
+Starting the 42000th iteration out of 100001 at Mon Jul 12 12:09:38 2021
+Starting the 43000th iteration out of 100001 at Mon Jul 12 12:09:39 2021
+Starting the 44000th iteration out of 100001 at Mon Jul 12 12:09:40 2021
+Starting the 45000th iteration out of 100001 at Mon Jul 12 12:09:41 2021
+Starting the 46000th iteration out of 100001 at Mon Jul 12 12:09:42 2021
+Starting the 47000th iteration out of 100001 at Mon Jul 12 12:09:42 2021
+Starting the 48000th iteration out of 100001 at Mon Jul 12 12:09:43 2021
+Starting the 49000th iteration out of 100001 at Mon Jul 12 12:09:44 2021
+Starting the 50000th iteration out of 100001 at Mon Jul 12 12:09:45 2021
+Starting the 51000th iteration out of 100001 at Mon Jul 12 12:09:46 2021
+Starting the 52000th iteration out of 100001 at Mon Jul 12 12:09:47 2021
+Starting the 53000th iteration out of 100001 at Mon Jul 12 12:09:48 2021
+Starting the 54000th iteration out of 100001 at Mon Jul 12 12:09:49 2021
+Starting the 55000th iteration out of 100001 at Mon Jul 12 12:09:50 2021
+Starting the 56000th iteration out of 100001 at Mon Jul 12 12:09:52 2021
+Starting the 57000th iteration out of 100001 at Mon Jul 12 12:09:53 2021
+Starting the 58000th iteration out of 100001 at Mon Jul 12 12:09:54 2021
+Starting the 59000th iteration out of 100001 at Mon Jul 12 12:09:55 2021
+Starting the 60000th iteration out of 100001 at Mon Jul 12 12:09:56 2021
+Starting the 61000th iteration out of 100001 at Mon Jul 12 12:09:57 2021
+Starting the 62000th iteration out of 100001 at Mon Jul 12 12:09:58 2021
+Starting the 63000th iteration out of 100001 at Mon Jul 12 12:09:59 2021
+Starting the 64000th iteration out of 100001 at Mon Jul 12 12:10:00 2021
+Starting the 65000th iteration out of 100001 at Mon Jul 12 12:10:01 2021
+Starting the 66000th iteration out of 100001 at Mon Jul 12 12:10:02 2021
+Starting the 67000th iteration out of 100001 at Mon Jul 12 12:10:03 2021
+Starting the 68000th iteration out of 100001 at Mon Jul 12 12:10:04 2021
+Starting the 69000th iteration out of 100001 at Mon Jul 12 12:10:05 2021
+Starting the 70000th iteration out of 100001 at Mon Jul 12 12:10:06 2021
+Starting the 71000th iteration out of 100001 at Mon Jul 12 12:10:07 2021
+Starting the 72000th iteration out of 100001 at Mon Jul 12 12:10:08 2021
+Starting the 73000th iteration out of 100001 at Mon Jul 12 12:10:09 2021
+Starting the 74000th iteration out of 100001 at Mon Jul 12 12:10:10 2021
+Starting the 75000th iteration out of 100001 at Mon Jul 12 12:10:11 2021
+Starting the 76000th iteration out of 100001 at Mon Jul 12 12:10:12 2021
+Starting the 77000th iteration out of 100001 at Mon Jul 12 12:10:13 2021
+Starting the 78000th iteration out of 100001 at Mon Jul 12 12:10:14 2021
+Starting the 79000th iteration out of 100001 at Mon Jul 12 12:10:15 2021
+Starting the 80000th iteration out of 100001 at Mon Jul 12 12:10:17 2021
+Starting the 81000th iteration out of 100001 at Mon Jul 12 12:10:18 2021
+Starting the 82000th iteration out of 100001 at Mon Jul 12 12:10:19 2021
+Starting the 83000th iteration out of 100001 at Mon Jul 12 12:10:20 2021
+Starting the 84000th iteration out of 100001 at Mon Jul 12 12:10:21 2021
+Starting the 85000th iteration out of 100001 at Mon Jul 12 12:10:22 2021
+Starting the 86000th iteration out of 100001 at Mon Jul 12 12:10:23 2021
+Starting the 87000th iteration out of 100001 at Mon Jul 12 12:10:24 2021
+Starting the 88000th iteration out of 100001 at Mon Jul 12 12:10:25 2021
+Starting the 89000th iteration out of 100001 at Mon Jul 12 12:10:26 2021
+Starting the 90000th iteration out of 100001 at Mon Jul 12 12:10:28 2021
+Starting the 91000th iteration out of 100001 at Mon Jul 12 12:10:29 2021
+Starting the 92000th iteration out of 100001 at Mon Jul 12 12:10:30 2021
+Starting the 93000th iteration out of 100001 at Mon Jul 12 12:10:31 2021
+Starting the 94000th iteration out of 100001 at Mon Jul 12 12:10:32 2021
+Starting the 95000th iteration out of 100001 at Mon Jul 12 12:10:33 2021
+Starting the 96000th iteration out of 100001 at Mon Jul 12 12:10:34 2021
+Starting the 97000th iteration out of 100001 at Mon Jul 12 12:10:35 2021
+Starting the 98000th iteration out of 100001 at Mon Jul 12 12:10:36 2021
+Starting the 99000th iteration out of 100001 at Mon Jul 12 12:10:37 2021
+Starting the 100000th iteration out of 100001 at Mon Jul 12 12:10:38 2021
+Sampling finished!

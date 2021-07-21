@@ -1,0 +1,20 @@
+***********************************************************
+********************* Starting dmbvs **********************
+***********************************************************
+*************************** MCMC **************************
+Total iterations = 101, Thinning = 1, Burnin = 51
+External seed = 669723, GSL seed = 1055450950, Generator type: mt19937
+Text output deposited in directory:
+ demo/simcompraff/output-pid-13519
+***********************************************************
+*************************** Data **************************
+# of categories = 150, # of observations = 100, # of covariates = 55
+***********************************************************
+********************* Hyperparameters *********************
+Slab variance = 10.0, Intercept variance = 10.0
+Beta-Bernoulli alpha = 0.02, Beta-Bernoulli beta = 1.98
+***********************************************************
+***********************************************************
+Starting the sampler
+Starting the 0th iteration out of 101 at Wed Jul 21 11:09:34 2021
+Sampling finished!
