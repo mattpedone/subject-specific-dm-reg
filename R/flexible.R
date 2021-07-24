@@ -383,7 +383,7 @@ for(i in 1:length(idx)){
 
 
 out <- ssdm(
-  YY = y, XX = x, ZZ = z, Niter = 1000, burn = 500, 
+  YY = y, XX = x, ZZ = z, Niter = 10000, burn = 5000, 
   penmig_lin = c(5, 25, 0.00025, 1.00, 1.00),
   penmig_nl = c(5, 25, 0.00025, 1.00, 1.00),
   thin = 10, randint = FALSE, hereditariety = 2, init = TRUE,
