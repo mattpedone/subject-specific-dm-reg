@@ -6,6 +6,11 @@
 
 using namespace Rcpp;
 
+#ifdef RCPP_USE_GLOBAL_ROSTREAM
+Rcpp::Rostream<true>&  Rcpp::Rcout = Rcpp::Rcpp_cout_get();
+Rcpp::Rostream<false>& Rcpp::Rcerr = Rcpp::Rcpp_cerr_get();
+#endif
+
 // sampler_randint
 Rcpp::List sampler_randint(arma::mat YY, arma::mat XX, arma::mat ZZ, arma::mat XXl, arma::mat XXT, arma::vec dj, int Niter, int burn, int thin, arma::vec hyper_theta_x, arma::vec hyper_theta_z, arma::vec penmig_lin, arma::vec penmig_nl, arma::vec tx, arma::vec tz, arma::vec prior_int, bool upsv, int hereditariety, bool conlnl, arma::vec grplabel, int ngroup, arma::vec theta_init, arma::vec theta_init2);
 RcppExport SEXP _ssdmreg_sampler_randint(SEXP YYSEXP, SEXP XXSEXP, SEXP ZZSEXP, SEXP XXlSEXP, SEXP XXTSEXP, SEXP djSEXP, SEXP NiterSEXP, SEXP burnSEXP, SEXP thinSEXP, SEXP hyper_theta_xSEXP, SEXP hyper_theta_zSEXP, SEXP penmig_linSEXP, SEXP penmig_nlSEXP, SEXP txSEXP, SEXP tzSEXP, SEXP prior_intSEXP, SEXP upsvSEXP, SEXP hereditarietySEXP, SEXP conlnlSEXP, SEXP grplabelSEXP, SEXP ngroupSEXP, SEXP theta_initSEXP, SEXP theta_init2SEXP) {

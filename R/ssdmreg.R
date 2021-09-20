@@ -5,9 +5,9 @@
 #' Matteo Pedone
 #'
 #' @docType package
-#' @name subject-specific-dm-reg
+#' @name ssdmreg
 #'
-#' @useDynLib subject-specific-dm-reg, .registration = TRUE
+#' @useDynLib ssdmreg, .registration = TRUE
 #' @importFrom Rcpp sourceCpp
 #' @importFrom stats runif
 #' @importFrom stats rnorm
@@ -16,6 +16,6 @@
 #' @importFrom stats p.adjust
 #' @importFrom spikeSlabGAM sm
 #' @importFrom dplyr between 
+#' @importFrom dirmult simPop
 #' @importFrom plotrix plotCI
-#' @useDynLib subject-specific-dm-reg, .registration = TRUE
 NULL

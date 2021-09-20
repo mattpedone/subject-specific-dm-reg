@@ -15,15 +15,15 @@ ssdm(
   hereditariety = 2,
   conlnl = TRUE,
   randint = TRUE,
-  hyper_theta_x = c(0.5, 10),
-  hyper_theta_z = c(0.5, 10),
-  penmig_lin = c(5, 25, 0.0025, 1, 1),
-  penmig_nl = c(5, 25, 0.0025, 1, 1),
+  hyper_theta_x = c(0.05, 10),
+  hyper_theta_z = c(0.05, 10),
+  penmig_lin = c(5, 25, 0.00025, 1, 1),
+  penmig_nl = c(5, 25, 0.00025, 1, 1),
   tx = c(0, 1),
   tz = c(0, 1),
   prior_int = c(0, 10),
   init = TRUE,
-  init_fd = 0.2
+  init_fd = 0.1
 )
 }
 \arguments{
@@ -135,6 +135,5 @@ rint samples from posterior distribution of \eqn{\iota}
 varrint samples from posterior distribution of \eqn{\sigma_{\iota}}
 }
 \description{
-MCMC sampler to perform bayesian variable selection, hierarchical
-Dirichlet-Multinomial regression
+MCMC sampler to perform bayesian variable selection, hierarchical Dirichlet-Multinomial regression
 }

@@ -1,7 +1,6 @@
 #' an R wrapper to Rcpp function sampler
 #'
-#' MCMC sampler to perform bayesian variable selection, hierarchical
-#' Dirichlet-Multinomial regression
+#' MCMC sampler to perform bayesian variable selection, hierarchical Dirichlet-Multinomial regression
 #'
 #' @param YY (count matrix) rows n samples, columns: J species
 #' @param XX (design matrix) n x P (continuous variables)
@@ -52,9 +51,6 @@
 #' @param init whether main effects coefficients shold be initialized with marginal correlations. Default is \code{TRUE}
 #' @param init_fd false discovery rate adopted as threshold if \code{init = TRUE}
 
-#' @section Details
-#' math stuff to be inserted here
- 
 #' @return thetaxposterior 
 #' samples from posterior distribution of \eqn{ \theta_x }
 #' @return thetazposterior samples from posterior distribution of \eqn{ \theta_z }
