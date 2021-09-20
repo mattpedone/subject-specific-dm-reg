@@ -11,7 +11,7 @@ for(k in 1:30){
 gendata_simple_confr <- function(J = 10, n = 100, P = 5, Q = 5, beta_min = 0.75, 
                                  beta_max = 1.00, n_relevant_taxa = 2, 
                                  n_relevant_x = 3, n_relevant_z = 3, n_relevant_inter = c(2, 2, 3, 3), 
-                                 corrx = .4, corrz = .4, theta0 = 0.01, WH = F, 
+                                 corrx = .4, corrz = .4, theta0 = 0.1, WH = T, 
                                  nli = T, f = "quadratic", seed = sample(1:1000, 1)) {
   
   set.seed(seed)
