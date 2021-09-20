@@ -16,3 +16,11 @@ TBA
 ## Example
 
 For a quick demonstration of the use of the function please check the script file in `demo/` directory.
+
+## Installation
+
+You can install the package from this GitHub repository, using the **devtools** package, running the following command:
+
+```
+devtools::install("mattpedone/subject-specific-dm-reg")
+```
